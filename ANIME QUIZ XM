@@ -1,0 +1,179 @@
+Anime-Quiz-XM/
+├── index.html       # Main HTML file
+├── style.css        # Stylesheet for the app
+├── app.js           # JavaScript file for app logic
+├── firebase.json    # Firebase Hosting configuration
+├── README.md        # Documentation for your app
+├── assets/          # Folder for images and other assets
+│   └── logo.png
+└── questions.json   # Sample quiz questions (opt<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Quiz XM</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="assets/logo.png" alt="Anime Quiz XM" class="logo">
+            <h1>Welcome to Anime Quiz XM</h1>
+        </header>
+        <main id="quiz-container">
+            <button id="start-quiz">Start Quiz</button>
+        </main>
+        <footer>
+            <a href="upi://pay?pa=syedahajirajamil@okaxis&pn=AnimeQuizXM&am=1&cu=INR" target="_blank">Add Money via UPI</a>
+        </footer>
+    </div>
+</body>
+</html>ional)
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    width: 100px;
+    margin: 20px auto;
+}
+
+header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+footer a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// DOM Elements
+const startQuizButton = document.getElementById("start-quiz");
+const quizContainer = document.getElementById("quiz-container");
+
+// Fetch Questions from Firestore
+async function fetchQuestions() {
+    const questionsRef = collection(db, "questions");
+    const querySnapshot = await getDocs(questionsRef);
+
+    const questions = [];
+    querySnapshot.forEach((doc) => {
+        questions.push(doc.data());
+    });
+
+    return questions;
+}
+
+// Start Quiz
+startQuizButton.addEventListener("click", async () => {
+    const questions = await fetchQuestions();
+    displayQuestion(questions[0]);
+});
+
+// Display Question
+function displayQuestion(question) {
+    quizContainer.innerHTML = `
+        <h2>${question.question}</h2>
+        ${question.options.map(
+            (option, index) => `<button onclick="checkAnswer('${option}', '${question.answer}')">${option}</button>`
+        ).join("")}
+    `;
+}
+
+// Check Answer
+window.checkAnswer = function(selected, correct) {
+    if (selected === correct) {
+        alert("Correct!");
+    } else {
+        alert("Wrong answer!");
+    }
+};{
+  "hosting": {
+    "public": ".",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}[
+    {
+        "question": "Who created Death Note?",
+        "options": ["Tsugumi Ohba", "Eiichiro Oda", "Masashi Kishimoto", "Hajime Isayama"],
+        "answer": "Tsugumi Ohba"
+    },
+    {
+        "question": "What is Naruto's dream?",
+        "options": ["Become Hokage", "Learn all Jutsu", "Defeat Sasuke", "Marry Hinata"],
+        "answer": "Become Hokage"
+    }
+]
+# Anime Quiz XM
+
+## About
+Anime Quiz XM is an interactive quiz app where players test their knowledge of anime. Play quizzes, earn prizes, and compete with others!
+
+### Features
+- Quiz questions from popular anime like Naruto, Death Note, and One Piece.
+- Easy, Normal, and Hard difficulty levels.
+- UPI payment integration.
+
+### Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/Anime-Quiz-XM.gitfirebase init
+firebase deploy---
+
+### **How to Use**
+1. Add this structure to a new GitHub repository named **Anime-Quiz-XM**.
+2. Replace `YOUR_API_KEY` and other Firebase placeholders in `app.js` with your Firebase credentials.
+3. Deploy your app using Firebase Hosting:
+   ```bash
+   firebase deploy
